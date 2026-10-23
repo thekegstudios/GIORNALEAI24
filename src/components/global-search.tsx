@@ -1,0 +1,9 @@
+'use client';
+import { useEffect,useRef,useState } from 'react';
+import Link from 'next/link';
+import { Search,ArrowUpRight } from 'lucide-react';
+export function GlobalSearch(){const [value,setValue]=useState(''),[items,setItems]=useState<{label:string;url:string;kind:string}[]>([]),[open,setOpen]=useState(false);const ref=useRef<HTMLDivElement>(null);
+  useEffect(()=>{const abort=new AbortController();if(value.trim().length<2){setItems([]);return;}const timer=setTimeout(async()=>{try{const response=await fetch(`/api/search?q=${encodeURIComponent(value)}`,{signal:abort.signal});if(response.ok)setItems((await response.json()).items);}catch{/* The normal search form remains usable. */}},250);return()=>{clearTimeout(timer);abort.abort();};},[value]);
+  useEffect(()=>{const close=(event:PointerEvent)=>{if(!ref.current?.contains(event.target as Node))setOpen(false);};document.addEventListener('pointerdown',close);return()=>document.removeEventListener('pointerdown',close);},[]);
+  return <div className="global-search" ref={ref} onKeyDown={event=>{if(event.key==='Escape')setOpen(false);}}><form action="/cerca"><label className="sr-only" htmlFor="global-query">Cerca nel giornale</label><Search size={17}/><input id="global-query" name="q" value={value} maxLength={100} autoComplete="off" placeholder="Una notizia, un luogo…" onFocus={()=>setOpen(true)} onChange={event=>{setValue(event.target.value);setOpen(true);}}/><button aria-label="Cerca"><ArrowUpRight size={17}/></button></form>{open&&items.length>0&&<ul className="global-search-results" aria-label="Suggerimenti di ricerca">{items.map(item=><li key={`${item.kind}:${item.url}`}><Link href={item.url} onClick={()=>setOpen(false)}><small>{item.kind}</small><span>{item.label}</span></Link></li>)}<li><Link href={`/cerca?q=${encodeURIComponent(value)}`} onClick={()=>setOpen(false)}>Tutti i risultati →</Link></li></ul>}</div>;
+}

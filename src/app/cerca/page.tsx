@@ -1,0 +1,5 @@
+import { Search } from 'lucide-react';
+import { getNews } from '@/lib/store';
+import { NewsGrid, PageIntro } from '@/components/news';
+export const metadata = { title: 'Cerca', robots: { index: false, follow: true } };
+export default async function SearchPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) { const { q = '' } = await searchParams; const query = q.slice(0, 200).trim(); const news = query ? await getNews({ query }) : []; return <div className="wrap page"><PageIntro eyebrow="TROVA IL TUO PUNTO DI VISTA" title="Cerca nelle notizie" description="Esplora i contenuti pubblicati per argomento, luogo o parola chiave." /><form className="search-form" action="/cerca"><label className="sr-only" htmlFor="search-query">Parole da cercare</label><Search size={21} /><input id="search-query" name="q" defaultValue={query} maxLength={200} placeholder="Una notizia, un tema, un luogo…" required /><button className="button">Cerca</button></form>{query && <><p className="results-count">{news.length} risultati per “{query}”</p><NewsGrid articles={news} /></>}</div>; }

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="GIORNALE AI24">
+  <defs><linearGradient id="sea" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#113e61"/><stop offset="1" stop-color="#061626"/></linearGradient><linearGradient id="light" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fff"/><stop offset="1" stop-color="#cfdfed"/></linearGradient></defs>
+  <rect width="512" height="512" rx="106" fill="#061727"/>
+  <circle cx="256" cy="250" r="160" fill="url(#sea)" stroke="#27c8f3" stroke-width="8"/>
+  <g fill="none" stroke="#1889bd" stroke-width="5" opacity=".65"><ellipse cx="256" cy="250" rx="90" ry="160"/><ellipse cx="256" cy="250" rx="158" ry="67"/><path d="M98 250h316M256 90v320"/></g>
+  <path d="M84 197C116 91 219 53 299 80" fill="none" stroke="#00c67a" stroke-width="19" stroke-linecap="round"/>
+  <path d="M172 83C274 37 383 101 418 202" fill="none" stroke="#f5f8ff" stroke-width="19" stroke-linecap="round"/>
+  <path d="M304 73C379 96 422 156 429 222" fill="none" stroke="#ff173d" stroke-width="19" stroke-linecap="round"/>
+  <path d="M220 126l-16 17-20-1-14 17 9 15 20-1 10 18 15 9 10 32 24 23 8 21 20 17 6 25 14 8 16-4 9 16 25 16 22-2-8-14-20-5-13-21-17-10-7-28-14-17-8-27-13-14-6-27 8-21-5-13-23-5-6-21-20 4z" fill="url(#light)"/>
+  <path d="M183 269l-12 19 1 31 13 13 8-22-1-28zM287 344l-24 11-28-2 13 18 32 4 23-18z" fill="url(#light)"/>
+  <g fill="none" stroke="#c4f7ff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"><path d="M329 179v32l29 28h26M160 228h29l20 20M345 301h34v-27"/></g>
+  <g fill="#8eeeff" stroke="#e7fbff" stroke-width="4"><circle cx="329" cy="171" r="9"/><circle cx="391" cy="239" r="9"/><circle cx="151" cy="228" r="9"/><circle cx="379" cy="265" r="9"/></g>
+  <path d="M142 424h76" stroke="#00c67a" stroke-width="12"/><path d="M218 424h76" stroke="#f5f8ff" stroke-width="12"/><path d="M294 424h76" stroke="#ff173d" stroke-width="12"/>
+</svg>

@@ -1,0 +1,3 @@
+'use client';
+import { useState } from 'react';
+export function ResetPreferences() { const [done, setDone] = useState(false); return <div className="notice-panel"><p>Puoi eliminare le preferenze salvate da questo sito nel browser attuale. Vengono rimossi tema, zona, interessi, notizie seguite e presa visione dell’avviso.</p><button className="button button-outline" style={{ marginTop: 18 }} onClick={() => { ['italia-ora-theme', 'italia-ora-preferences', 'italia-ora-followed', 'italia-ora-preferences-notice'].forEach(key => localStorage.removeItem(key)); document.documentElement.dataset.theme = 'dark'; setDone(true); }}>{done ? 'Preferenze rimosse' : 'Elimina le preferenze da questo browser'}</button></div>; }

@@ -1,0 +1,11 @@
+import { readFile, writeFile } from 'node:fs/promises';
+import { createRequire } from 'node:module';
+import { fileURLToPath } from 'node:url';
+const require = createRequire(import.meta.url);
+const nextRequire = createRequire(require.resolve('next/package.json'));
+const sharp = nextRequire('sharp');
+const svg = await readFile(new URL('../public/brand/ai24-icon.svg', import.meta.url));
+for (const size of [192, 512]) await sharp(svg).resize(size, size).png().toFile(fileURLToPath(new URL(`../public/brand/ai24-icon-${size}.png`, import.meta.url)));
+await writeFile(new URL('../src/app/icon.svg', import.meta.url), svg);
+await writeFile(new URL('../src/app/apple-icon.png', import.meta.url), await sharp(svg).resize(180, 180).png().toBuffer());
+console.log('Icone native SVG, 192, 512 e Apple 180 generate. Logo originale invariato.');

@@ -1,0 +1,16 @@
+[build]
+  command = "node scripts/netlify-build.mjs"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "24"
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+  external_node_modules = ["pg"]
+  included_files = ["migrations/*.sql"]
+
+# Next.js is handled by Netlify's automatic OpenNext adapter.
+# Configure database credentials, SITE_URL and runtime flags in the Netlify UI,
+# with Builds and Functions scopes. Values here only configure the build.

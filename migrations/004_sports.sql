@@ -1,0 +1,11 @@
+CREATE TABLE IF NOT EXISTS sports_disciplines (id TEXT PRIMARY KEY, payload TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS sports_providers (id TEXT PRIMARY KEY, payload TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS sports_competitions (id TEXT PRIMARY KEY, sport_id TEXT NOT NULL, provider_id TEXT NOT NULL, payload TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS sports_entities (id TEXT PRIMARY KEY, sport_id TEXT NOT NULL, kind TEXT NOT NULL, payload TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS sports_events (id TEXT PRIMARY KEY, sport_id TEXT NOT NULL, competition_id TEXT NOT NULL, starts_at TEXT NOT NULL, status TEXT NOT NULL, updated_at TEXT NOT NULL, payload TEXT NOT NULL);
+CREATE INDEX IF NOT EXISTS sports_events_date ON sports_events(starts_at);
+CREATE INDEX IF NOT EXISTS sports_events_competition ON sports_events(competition_id,starts_at);
+CREATE TABLE IF NOT EXISTS sports_standings (id TEXT PRIMARY KEY, competition_id TEXT NOT NULL, updated_at TEXT NOT NULL, payload TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS sports_usage (id TEXT PRIMARY KEY, provider_id TEXT NOT NULL, day TEXT NOT NULL, requests INTEGER NOT NULL DEFAULT 0, minute_key TEXT, minute_requests INTEGER NOT NULL DEFAULT 0, provider_remaining INTEGER, estimated_cost_usd REAL, updated_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS sports_sync_state (id TEXT PRIMARY KEY, next_at TEXT NOT NULL, locked_until TEXT, failures INTEGER NOT NULL DEFAULT 0, last_success TEXT, last_error TEXT, payload TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS sports_audit (id TEXT PRIMARY KEY, created_at TEXT NOT NULL, action TEXT NOT NULL, entity_id TEXT, payload TEXT NOT NULL);

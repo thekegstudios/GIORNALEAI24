@@ -1,0 +1,50 @@
+services:
+  web:
+    build: .
+    env_file: .env.local
+    environment:
+      DATABASE_PATH: /app/data/italia-ora.sqlite
+    ports:
+      - "127.0.0.1:3000:3000"
+    volumes:
+      - news-data:/app/data
+    restart: unless-stopped
+  worker:
+    build: .
+    env_file: .env.local
+    environment:
+      DATABASE_PATH: /app/data/italia-ora.sqlite
+    command: ["node", "node_modules/tsx/dist/cli.mjs", "scripts/worker.ts"]
+    volumes:
+      - news-data:/app/data
+    restart: unless-stopped
+  data-worker:
+    build: .
+    env_file: .env.local
+    environment:
+      DATABASE_PATH: /app/data/italia-ora.sqlite
+    command: ["node", "node_modules/tsx/dist/cli.mjs", "scripts/data-worker.ts"]
+    volumes:
+      - news-data:/app/data
+    restart: unless-stopped
+  sports-worker:
+    build: .
+    env_file: .env.local
+    environment:
+      DATABASE_PATH: /app/data/italia-ora.sqlite
+    command: ["node", "node_modules/tsx/dist/cli.mjs", "scripts/sports-worker.ts"]
+    volumes:
+      - news-data:/app/data
+    restart: unless-stopped
+  watchdog:
+    build: .
+    env_file: .env.local
+    environment:
+      DATABASE_PATH: /app/data/italia-ora.sqlite
+      SITE_URL: http://web:3000
+    command: ["node", "node_modules/tsx/dist/cli.mjs", "scripts/watchdog.ts"]
+    volumes:
+      - news-data:/app/data
+    restart: unless-stopped
+volumes:
+  news-data:

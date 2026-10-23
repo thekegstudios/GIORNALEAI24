@@ -1,0 +1,21 @@
+[Unit]
+Description=GIORNALE AI24 - raccolta fonti ogni cinque minuti
+After=network-online.target
+Wants=network-online.target
+[Service]
+Type=simple
+User=italiaora
+WorkingDirectory=/opt/italia-ora
+EnvironmentFile=/opt/italia-ora/.env.local
+Environment=NODE_ENV=production
+ExecStart=/usr/bin/node /opt/italia-ora/node_modules/tsx/dist/cli.mjs scripts/worker.ts
+Restart=on-failure
+RestartSec=10
+KillSignal=SIGTERM
+TimeoutStopSec=300
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ReadWritePaths=/opt/italia-ora/data
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,8 @@
+import { NextResponse } from 'next/server';
+import { z } from 'zod';
+import { getSportsEvents,getDisciplines,getCompetitions,competitionAuthorized } from '@/lib/sports/store';
+import { rateLimit } from '@/lib/security';
+import { isValidDate,romeSportsDate } from '@/lib/sports/catalog';
+export const runtime='nodejs';export const dynamic='force-dynamic';
+const filters=z.object({date:z.string().refine(isValidDate).optional(),sport:z.string().regex(/^[a-z0-9-]{1,80}$/).optional(),competition:z.string().regex(/^[a-z0-9_-]{1,80}$/).optional(),country:z.string().trim().min(1).max(80).optional(),status:z.enum(['scheduled','live','finished','postponed','cancelled','interrupted','unknown']).optional(),gender:z.enum(['men','women','mixed','unknown']).optional()}).strict();
+export async function GET(request:Request){if(!await rateLimit(request,'sports-read',120,60000))return NextResponse.json({error:'Troppe richieste.'},{status:429});const parsed=filters.safeParse(Object.fromEntries(new URL(request.url).searchParams));if(!parsed.success)return NextResponse.json({error:'Filtri sportivi non validi.'},{status:400});const [events,sports,competitions]=await Promise.all([getSportsEvents({date:romeSportsDate(),...parsed.data}),getDisciplines(),getCompetitions()]);return NextResponse.json({events,sports,competitions:competitions.filter(competitionAuthorized).map(c=>({id:c.id,sportId:c.sportId,name:c.name,country:c.country,gender:c.gender,season:c.season,coverageVerifiedAt:c.coverageVerifiedAt})),timeZone:'Europe/Rome',source:'database',fetchedAt:new Date().toISOString()},{headers:{'Cache-Control':'public, max-age=30, stale-while-revalidate=60'}});}

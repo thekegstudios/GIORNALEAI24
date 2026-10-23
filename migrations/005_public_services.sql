@@ -1,0 +1,13 @@
+CREATE TABLE IF NOT EXISTS fuel_imports (id TEXT PRIMARY KEY, dataset_date TEXT, imported_at TEXT NOT NULL, station_count INTEGER NOT NULL, price_count INTEGER NOT NULL, input_hash TEXT NOT NULL UNIQUE, source_url TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS fuel_stations (id TEXT PRIMARY KEY, municipality TEXT NOT NULL, province TEXT NOT NULL, latitude REAL, longitude REAL, network TEXT NOT NULL, payload TEXT NOT NULL);
+CREATE INDEX IF NOT EXISTS fuel_stations_area ON fuel_stations (municipality, province);
+CREATE TABLE IF NOT EXISTS fuel_prices (station_id TEXT NOT NULL, fuel TEXT NOT NULL, service TEXT NOT NULL, price REAL NOT NULL, unit TEXT NOT NULL, reported_at TEXT NOT NULL, dataset_date TEXT NOT NULL, PRIMARY KEY (station_id, fuel, service));
+CREATE INDEX IF NOT EXISTS fuel_prices_lookup ON fuel_prices (fuel, service, price);
+CREATE TABLE IF NOT EXISTS fuel_history (day TEXT NOT NULL, fuel TEXT NOT NULL, service TEXT NOT NULL, network TEXT NOT NULL, average REAL NOT NULL, samples INTEGER NOT NULL, source_url TEXT NOT NULL, PRIMARY KEY (day, fuel, service, network));
+CREATE TABLE IF NOT EXISTS public_data_runtime (id TEXT PRIMARY KEY, payload TEXT NOT NULL, updated_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS economic_indicators (id TEXT PRIMARY KEY, series_id TEXT NOT NULL, period TEXT NOT NULL, published_at TEXT NOT NULL, payload TEXT NOT NULL);
+CREATE INDEX IF NOT EXISTS economic_indicators_series ON economic_indicators (series_id, period);
+CREATE TABLE IF NOT EXISTS economic_indicator_versions (id TEXT PRIMARY KEY, observation_id TEXT NOT NULL, payload TEXT NOT NULL, changed_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS civic_measures (id TEXT PRIMARY KEY, status TEXT NOT NULL, updated_at TEXT NOT NULL, payload TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS municipal_notices (id TEXT PRIMARY KEY, municipality TEXT NOT NULL, published_at TEXT NOT NULL, expires_at TEXT, payload TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS admin_alerts (fingerprint TEXT PRIMARY KEY, sent_at TEXT NOT NULL, status TEXT NOT NULL);

@@ -1,0 +1,5 @@
+'use client';
+import { useEffect,useRef,useState } from 'react';
+import { useRouter } from 'next/navigation';
+/** Refreshes only the view; source collection is always the separate server worker. */
+export function AutoRefresh(){const router=useRouter(),lastRun=useRef<string|null>(null),[available,setAvailable]=useState(false);useEffect(()=>{const abort=new AbortController();async function check(){if(document.visibilityState!=='visible')return;try{const response=await fetch('/api/status',{cache:'no-store',signal:abort.signal});if(!response.ok)return;const id=(await response.json()).lastRun?.id as string|undefined;if(id&&lastRun.current&&id!==lastRun.current)setAvailable(true);if(id)lastRun.current=id;}catch{/* Keep the page readable while offline. */}}void check();const timer=setInterval(()=>void check(),60_000);return()=>{clearInterval(timer);abort.abort();};},[]);return available?<button className="updates-notice" onClick={()=>{setAvailable(false);router.refresh();}}>Nuovi aggiornamenti disponibili · Mostra</button>:null;}

@@ -1,0 +1,144 @@
+.opening-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: #040a13;
+  pointer-events: none;
+  user-select: none;
+  animation: opening-intro-failsafe 6.5s linear forwards;
+}
+
+.opening-intro-grid {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(#5bbbe508 1px, transparent 1px), linear-gradient(90deg, #5bbbe508 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse at center, #000, transparent 72%);
+}
+
+.opening-intro-glow {
+  position: absolute;
+  width: min(1100px, 140vw);
+  height: min(650px, 95vh);
+  background: radial-gradient(ellipse, #1389b52e 0%, #0b365b1a 38%, transparent 70%);
+  opacity: 0;
+}
+
+.opening-intro-halo {
+  position: absolute;
+  width: clamp(300px, 54vw, 760px);
+  aspect-ratio: 1;
+  border: 1px solid #69caff16;
+  border-radius: 50%;
+  box-shadow: 0 0 90px #1b9ec20b, inset 0 0 90px #1b9ec207;
+  opacity: 0;
+}
+
+.opening-intro-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min(940px, calc(100% - 56px));
+  gap: clamp(20px, 3.5vh, 34px);
+}
+
+.opening-intro-kicker,
+.opening-intro-caption {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 500;
+  text-align: center;
+  opacity: 0;
+}
+.opening-intro-skip { position:absolute;bottom:max(26px,env(safe-area-inset-bottom));border:1px solid #9ab4cb44;border-radius:30px;background:#040a13;color:#bcd1e2;padding:10px 18px;font-size:12px;pointer-events:auto; }
+
+.opening-intro-kicker {
+  color: #9ab4cb;
+  font-size: 10px;
+  letter-spacing: .32em;
+}
+
+.opening-intro-logo {
+  width: 100%;
+  line-height: 0;
+  opacity: 0;
+}
+
+.opening-intro-logo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 0 26px #37c8ff20);
+}
+
+.opening-intro-rule {
+  display: flex;
+  width: clamp(110px, 20vw, 190px);
+  height: 2px;
+  transform: scaleX(0);
+  transform-origin: center;
+  box-shadow: 0 0 12px #6dcaff30;
+}
+
+.opening-intro-rule i { flex: 1; background: #04c982; }
+.opening-intro-rule i:nth-child(2) { background: #f4f8fd; }
+.opening-intro-rule i:nth-child(3) { background: #f63350; }
+
+.opening-intro-caption {
+  color: #5e809a;
+  font-size: 8px;
+  letter-spacing: .27em;
+}
+
+.opening-intro[data-ready="true"] { animation: opening-intro-screen 3s ease both; }
+.opening-intro[data-ready="true"] .opening-intro-logo { animation: opening-intro-logo 3s cubic-bezier(.2,.7,.25,1) both; }
+.opening-intro[data-ready="true"] .opening-intro-kicker,
+.opening-intro[data-ready="true"] .opening-intro-caption { animation: opening-intro-copy 3s ease both; }
+.opening-intro[data-ready="true"] .opening-intro-rule { animation: opening-intro-rule 3s cubic-bezier(.2,.7,.25,1) both; }
+.opening-intro[data-ready="true"] .opening-intro-glow,
+.opening-intro[data-ready="true"] .opening-intro-halo { animation: opening-intro-halo 3s ease-out both; }
+
+@keyframes opening-intro-screen {
+  0%, 80% { opacity: 1; }
+  100% { opacity: 0; visibility: hidden; }
+}
+@keyframes opening-intro-logo {
+  0% { opacity: 0; transform: translateY(18px) scale(.88); }
+  28%, 78% { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-8px) scale(1.035); }
+}
+@keyframes opening-intro-copy {
+  0%, 10% { opacity: 0; transform: translateY(6px); }
+  34%, 77% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-4px); }
+}
+@keyframes opening-intro-rule {
+  0%, 20% { transform: scaleX(0); opacity: 0; }
+  52%, 80% { transform: scaleX(1); opacity: 1; }
+  100% { transform: scaleX(1.12); opacity: 0; }
+}
+@keyframes opening-intro-halo {
+  0% { opacity: 0; transform: scale(.8); }
+  35%, 76% { opacity: 1; }
+  100% { opacity: 0; transform: scale(1.12); }
+}
+@keyframes opening-intro-failsafe {
+  0%, 90% { opacity: 1; }
+  100% { opacity: 0; visibility: hidden; }
+}
+
+@media (max-width: 640px) {
+  .opening-intro-content { width: calc(100% - 28px); gap: 24px; }
+  .opening-intro-kicker { font-size: 8px; letter-spacing: .22em; }
+  .opening-intro-caption { font-size: 7px; letter-spacing: .18em; }
+  .opening-intro-grid { background-size: 40px 40px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .opening-intro { display: none; animation: none; }
+  .opening-intro *, .opening-intro[data-ready="true"] { animation: none !important; }
+}

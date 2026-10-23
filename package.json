@@ -1,0 +1,44 @@
+{
+  "name": "giornale-ai24",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Il portale di informazione italiana di KEG Studios",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "dev": "next dev --hostname 127.0.0.1",
+    "build": "next build --webpack",
+    "start": "next start --hostname 0.0.0.0",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test tests/*.test.ts",
+    "db:init": "tsx --env-file-if-exists=.env.local scripts/init-db.ts",
+    "ingest": "tsx --env-file-if-exists=.env.local scripts/ingest.ts",
+    "worker": "tsx --env-file-if-exists=.env.local scripts/worker.ts",
+    "data:worker": "tsx --env-file-if-exists=.env.local scripts/data-worker.ts",
+    "data:import": "tsx --env-file-if-exists=.env.local scripts/data-worker.ts --once",
+    "sports:worker": "tsx --env-file-if-exists=.env.local scripts/sports-worker.ts",
+    "watchdog": "tsx --env-file-if-exists=.env.local scripts/watchdog.ts"
+  },
+  "dependencies": {
+    "next": "^16.0.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "lucide-react": "^0.468.0",
+    "pg": "^8.16.0",
+    "fast-xml-parser": "^5.3.0",
+    "zod": "^4.1.0",
+    "server-only": "^0.0.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.0",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@types/pg": "^8.15.0",
+    "tsx": "^4.20.0",
+    "tailwindcss": "^4.1.0",
+    "@tailwindcss/postcss": "^4.1.0"
+  }
+}

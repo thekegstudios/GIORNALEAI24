@@ -1,0 +1,19 @@
+[Unit]
+Description=GIORNALE AI24 - sito Next.js
+After=network-online.target
+Wants=network-online.target
+[Service]
+Type=simple
+User=italiaora
+WorkingDirectory=/opt/italia-ora
+EnvironmentFile=/opt/italia-ora/.env.local
+Environment=NODE_ENV=production
+ExecStart=/usr/bin/node /opt/italia-ora/node_modules/next/dist/bin/next start --hostname 127.0.0.1
+Restart=on-failure
+RestartSec=10
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ReadWritePaths=/opt/italia-ora/data /opt/italia-ora/.next
+[Install]
+WantedBy=multi-user.target

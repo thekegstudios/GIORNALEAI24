@@ -1,0 +1,16 @@
+CREATE TABLE IF NOT EXISTS newsroom_jobs (id TEXT PRIMARY KEY, idempotency_key TEXT NOT NULL UNIQUE, source_id TEXT NOT NULL, canonical_url TEXT NOT NULL, content_hash TEXT NOT NULL, item_payload TEXT NOT NULL, source_payload TEXT NOT NULL, state TEXT NOT NULL, attempts INTEGER NOT NULL DEFAULT 0, available_at TEXT NOT NULL, lease_owner TEXT, lease_expires_at TEXT, event_id TEXT, draft_payload TEXT, verification_payload TEXT, last_error TEXT, created_at TEXT NOT NULL, updated_at TEXT NOT NULL);
+CREATE INDEX IF NOT EXISTS newsroom_queue_idx ON newsroom_jobs(state, available_at, created_at);
+CREATE INDEX IF NOT EXISTS newsroom_job_event_idx ON newsroom_jobs(event_id, created_at);
+CREATE TABLE IF NOT EXISTS newsroom_actions (id TEXT PRIMARY KEY, module TEXT NOT NULL, action TEXT NOT NULL, entity_id TEXT, run_id TEXT, details TEXT NOT NULL, created_at TEXT NOT NULL);
+CREATE INDEX IF NOT EXISTS newsroom_actions_date_idx ON newsroom_actions(created_at);
+CREATE TABLE IF NOT EXISTS newsroom_verifications (job_id TEXT PRIMARY KEY, event_id TEXT, payload TEXT NOT NULL, checked_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS newsroom_runtime (id TEXT PRIMARY KEY, payload TEXT NOT NULL, updated_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS source_health (source_id TEXT PRIMARY KEY, failures INTEGER NOT NULL DEFAULT 0, suspended_until TEXT, last_error TEXT, last_checked_at TEXT);
+CREATE TABLE IF NOT EXISTS newsroom_incidents (id TEXT PRIMARY KEY, fingerprint TEXT NOT NULL UNIQUE, severity TEXT NOT NULL, status TEXT NOT NULL, module TEXT NOT NULL, title TEXT NOT NULL, details TEXT NOT NULL, first_seen_at TEXT NOT NULL, last_seen_at TEXT NOT NULL, resolved_at TEXT, automatic_action TEXT);
+CREATE TABLE IF NOT EXISTS homepage_overrides (event_id TEXT PRIMARY KEY, position INTEGER, excluded INTEGER NOT NULL DEFAULT 0, reason TEXT NOT NULL, updated_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS homepage_editions (id TEXT PRIMARY KEY, payload TEXT NOT NULL, created_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS link_checks (url TEXT PRIMARY KEY, status TEXT NOT NULL, http_status INTEGER, checked_at TEXT NOT NULL, error TEXT);
+CREATE TABLE IF NOT EXISTS page_metrics (day TEXT NOT NULL, path TEXT NOT NULL, category TEXT, region TEXT, article_id TEXT, views INTEGER NOT NULL DEFAULT 0, load_ms_sum REAL NOT NULL DEFAULT 0, load_samples INTEGER NOT NULL DEFAULT 0, PRIMARY KEY(day, path));
+CREATE TABLE IF NOT EXISTS ai_usage_details (usage_id TEXT PRIMARY KEY, purpose TEXT NOT NULL, model TEXT NOT NULL, web_searches INTEGER NOT NULL DEFAULT 0, created_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS public_answer_cache (key TEXT PRIMARY KEY, payload TEXT NOT NULL, content_version TEXT NOT NULL, expires_at TEXT NOT NULL, created_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS geographic_units (id TEXT PRIMARY KEY, level TEXT NOT NULL, parent_id TEXT, label TEXT NOT NULL, slug TEXT NOT NULL, source_url TEXT NOT NULL, checked_at TEXT NOT NULL, metadata TEXT NOT NULL);

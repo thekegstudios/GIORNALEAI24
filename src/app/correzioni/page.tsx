@@ -1,0 +1,6 @@
+import Link from 'next/link';
+import { getCorrections } from '@/lib/store';
+import { EmptyState, PageIntro } from '@/components/news';
+import { fullDate } from '@/lib/format';
+export const metadata = { title: 'Registro pubblico delle correzioni', alternates: { canonical: '/correzioni' } };
+export default async function CorrectionsPage() { const corrections = await getCorrections(); return <div className="wrap page"><PageIntro eyebrow="TRASPARENZA EDITORIALE" title="Correggere, in chiaro." description="Le modifiche sostanziali ai contenuti pubblicati: cosa è cambiato, quando e perché. Le versioni precedenti sono conservate nel registro interno." /><div className="notice-panel"><p>Hai trovato un errore? <Link className="text-link" href="/segnala">Invia una segnalazione alla moderazione →</Link></p></div>{corrections.length ? corrections.map(c => <article className="correction" key={c.id}><time dateTime={c.at}>{fullDate(c.at)}</time><h2><Link href={`/notizie/${c.slug}`}>{c.title}</Link></h2><p>{c.reason}</p>{c.previousTitle !== c.newTitle && <p><del>{c.previousTitle}</del><br /><strong>{c.newTitle}</strong></p>}</article>) : <EmptyState title="Nessuna correzione registrata." text="Le eventuali correzioni sostanziali e i ritiri saranno comunicati in questa pagina. Questo registro non implica che ogni contenuto sia privo di errori." />}</div>; }
